@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context=".MainActivity">
+
+    <dji.ux.widget.FPVWidget
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <dji.ux.widget.FPVOverlayWidget
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:id="@+id/signal"
+        android:background="@color/gray_dark"
+        android:orientation="horizontal">
+
+        <dji.ux.widget.PreFlightStatusWidget
+            android:layout_width="530dp"
+            android:layout_height="25dp"/>
+
+        <dji.ux.widget.VideoSignalWidget
+            android:layout_width="38dp"
+            android:layout_height="22dp"/>
+
+        <dji.ux.widget.GPSSignalWidget
+            android:layout_width="40dp"
+            android:layout_height="25dp"/>
+
+        <dji.ux.widget.BatteryWidget
+            android:layout_width="100dp"
+            android:layout_height="22dp"/>
+
+        <dji.ux.widget.ConnectionWidget
+            android:layout_width="20dp"
+            android:layout_height="25dp"/>
+        </LinearLayout>
+
+    <dji.ux.widget.RemainingFlightTimeWidget
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="18dp"
+        android:layout_width="match_parent"
+        android:background="@color/transparent"
+        android:layout_height="20dp"
+        android:id="@+id/flightTime"/>
+
+    <Button
+        android:layout_width="60dp"
+        android:layout_height="35dp"
+        android:id="@+id/ready"
+        android:layout_below="@id/flightTime"
+        android:text="Ready"
+        android:textSize="10sp"
+        android:gravity="center"/>
+
+    <ToggleButton
+        android:layout_width="60dp"
+        android:layout_height="35dp"
+        android:id="@+id/missionSwitch"
+        android:layout_below="@id/flightTime"
+        android:layout_toRightOf="@id/ready"
+        android:textOn="Stop"
+        android:textOff="Start"
+        android:textSize="10dp"
+        android:gravity="center"/>
+
+    <ToggleButton
+        android:layout_width="65dp"
+        android:layout_height="35dp"
+        android:id="@+id/pause"
+        android:layout_below="@id/flightTime"
+        android:layout_toRightOf="@id/missionSwitch"
+        android:textOn="Resume"
+        android:textOff="Pause"
+        android:textSize="10sp"
+        android:gravity="center"/>
+
+    <Button
+        android:layout_width="60dp"
+        android:layout_height="35dp"
+        android:id="@+id/clear"
+        android:layout_below="@id/flightTime"
+        android:layout_toRightOf="@id/pause"
+        android:text="clear"
+        android:textSize="10sp"
+        android:gravity="center"/>
+
+    <!--Take off and return home buttons on left -->
+    <LinearLayout
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:orientation="vertical"
+        android:layout_below="@id/missionSwitch"
+        android:layout_marginTop="15dp">
+
+        <dji.ux.widget.TakeOffWidget
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="10dp"/>
+
+        <dji.ux.widget.ReturnHomeWidget
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"/>
+    </LinearLayout>
+
+    <dji.ux.widget.controls.PictureVideoSwitch
+        android:layout_width="44dp"
+        android:layout_height="36dp"
+        android:layout_below="@id/flightTime"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="100dp"/>
+
+    <dji.ux.widget.controls.CameraCaptureWidget
+        android:layout_width="42dp"
+        android:layout_height="56dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="150dp"
+        android:layout_below="@id/flightTime"/>
+
+    <fragment
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="200dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/map"
+        class="com.google.android.gms.maps.SupportMapFragment"/>
+
+</RelativeLayout>

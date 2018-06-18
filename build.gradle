@@ -1,0 +1,103 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.protobuf'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "com.dji.djiapp"
+        minSdkVersion 19
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+    dexOptions{
+        incremental = true;
+        preDexLibraries = false
+        javaMaxHeapSize "4g"
+    }
+    packagingOptions{
+        doNotStrip "*/*/libdjivideo.so"
+        doNotStrip "*/*/libSDKRelativeJNI.so"
+        doNotStrip "*/*/libFlyForbid.so"
+        doNotStrip "*/*/libduml_vision_bokeh.so"
+        doNotStrip "*/*/libyuv2.so"
+        doNotStrip "*/*/libGroudStation.so"
+        doNotStrip "*/*/libFRCorkscrew.so"
+        doNotStrip "*/*/libUpgradeVerify.so"
+        doNotStrip "*/*/libFR.so"
+        exclude 'META-INF/rxjava.properties'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:25.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support:multidex:1.0.3'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    implementation 'com.google.protobuf:protobuf-lite:3.0.0'
+
+    // Google Maps API
+    implementation 'com.google.android.gms:play-services-ads:9.4.0'
+    implementation 'com.google.android.gms:play-services-auth:9.4.0'
+    implementation 'com.google.android.gms:play-services-gcm:9.4.0'
+
+    // DJI API
+    implementation ('com.dji:dji-uxsdk:4.5.1'){
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
+    implementation ('com.dji:dji-sdk:4.5.1'){
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
+    compileOnly ('com.dji:dji-sdk-provided:4.5.1')
+
+}
+
+sourceSets {
+    main.java.srcDirs += "${protobuf.generatedFilesBaseDir}/main/javalite"
+}
+
+protobuf {
+    protoc {
+        // You still need protoc like in the non-Android case
+        artifact = 'com.google.protobuf:protoc:3.0.0'
+    }
+    plugins {
+        javalite {
+            // The codegen for lite comes as a separate artifact
+            artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0'
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                // In most cases you don't need the full Java output
+                // if you use the lite output.
+                remove java
+            }
+            task.plugins {
+                javalite { }
+            }
+        }
+    }
+}

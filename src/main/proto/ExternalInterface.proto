@@ -1,0 +1,1710 @@
+syntax = "proto3";
+
+package mcs;
+
+message MsgContainer
+{
+    oneof m_msg
+    {
+        // Command Connection
+        Mcs_ConnectAcsCommand_Msg 		m_mcs_connect_acs_command_msg = 1;
+        Acs_ConnectAssetCommand_Msg 	m_acs_connect_asset_command_msg = 130;
+        
+        // Status
+        Mcs_McsStatus_Msg 				m_mcs_status_msg = 2;
+        Acs_AcsStatus_Msg 				m_acs_status_msg = 132;
+        Acs_AssetTelemetry_Msg 			m_acs_asset_telemetry_msg = 129;
+        Acs_AssetAlert_Msg 				m_acs_asset_alert_msg = 133;
+        Acs_AssetMovementUpdate_Msg 	m_acs_asset_movement_update_msg = 134;
+        
+        // Battlefield Information
+        Mcs_AddProhibitedZone_Msg 		m_mcs_add_prohibited_zone_msg = 3;
+        Mcs_RemoveProhibitedZone_Msg 	m_mcs_remove_prohibited_zone_msg = 4;
+        Mcs_AddRedForce_Msg 			m_mcs_add_red_force_msg = 5;
+        Mcs_RemoveRedForce_Msg 			m_mcs_remove_red_force_msg = 6;
+        
+        // Report
+        Acs_BattleReport_Msg 			m_acs_battle_report_msg = 135;
+        
+        // Task
+        Mcs_TaskSummary_Msg 			m_mcs_task_summary_msg = 9;
+        Mcs_ExecuteTaskCommand_Msg 		m_mcs_execute_task_command_msg = 10;
+        Mcs_AbortTaskCommand_Msg 		m_mcs_abort_task_command_msg = 11;
+        Acs_TaskStatusUpdate_Msg 		m_acs_task_status_update_msg = 138;
+        
+        // Image
+        Sys_Image_Msg 					m_sys_image_msg = 17;
+        
+        // Acknowledgement
+        Sys_Ack_Msg 					m_sys_ack_msg = 16;
+    }
+}
+
+
+enum AckType_Enum
+{
+    ACK_TYPE_NOT_IN_USE = 0;
+    
+    ACK_ACCEPT = 1;
+    ACK_REJECT = 2;
+    ACK_OK = 3;
+    ACK_WARNING = 4;
+    ACK_ERROR = 5;
+    ACK_TIMEOUT = 6;
+}
+
+
+enum Affiliation_Enum 
+{
+    AFFILIATION_NOT_IN_USE = 0;
+    
+    AFFILIATION_PENDING = 80;
+    AFFILIATION_UNKNOWN = 85;
+    AFFILIATION_ASSUMED_FRIEND = 65;
+    AFFILIATION_FRIEND = 70;
+    AFFILIATION_NEUTRAL = 78;
+    AFFILIATION_SUSPECT = 83;
+    AFFILIATION_HOSTILE = 72;
+    AFFILIATION_EXERCISE_PENDING = 71;
+    AFFILIATION_EXERCISE_UNKNOWN = 87;
+    AFFILIATION_EXERCISE_ASSUMED_FRIEND = 77;
+    AFFILIATION_EXERCISE_FRIEND = 68;
+    AFFILIATION_EXERCISE_NEUTRAL = 76;
+    AFFILIATION_JOKER = 74;
+    AFFILIATION_FAKER = 75;
+}
+
+
+enum AssetAlertType_Enum 
+{
+    ASSET_ALERT_TYPE_NOT_IN_USE = 0;
+    
+    ASSET_ALERT_ATTRITED = 1;
+    ASSET_ALERT_COMPROMISED = 2;
+    ASSET_ALERT_COMMS_LOST = 3;
+    ASSET_ALERT_COMMS_RESTORED = 4;
+    ASSET_ALERT_NOT_ATTRITED = 5;
+    ASSET_ALERT_NOT_COMPROMISED = 6;
+}
+
+
+enum AssetHealth_Enum 
+{
+    ASSET_HEALTH_NOT_IN_USE = 0;
+    
+    ASSET_HEALTH_NORMAL = 1;
+    ASSET_HEALTH_IMMOBILE = 2;
+    ASSET_HEALTH_UNRESPONSIVE = 3;
+}
+
+
+enum BattleDimension_Enum
+{
+    BATTLE_DIMENSION_NOT_IN_USE = 0;
+    
+    BATTLE_DIMENSION_SPACE = 80;
+    BATTLE_DIMENSION_AIR = 65;
+    BATTLE_DIMENSION_GROUND = 71;
+    BATTLE_DIMENSION_SEA_SURFACE = 83;
+    BATTLE_DIMENSION_SEA_SUBSURFACE = 85;
+    BATTLE_DIMENSION_SPECIAL_OPERATIONS_FORCES = 70;
+    BATTLE_DIMENSION_OTHER = 88;
+    BATTLE_DIMENSION_UNKNOWN = 90;
+}
+
+
+enum BdaOutcome_Enum 
+{
+    BDA_OUTCOME_NOT_APPLICABLE = 0;
+    BDA_OUTCOME_MIA = 1;
+    BDA_OUTCOME_WIA = 2;
+    BDA_OUTCOME_KIA = 3;
+    BDA_OUTCOME_FIREPOWER_KILL = 4;
+    BDA_OUTCOME_MOBILITY_KILL = 5;
+    BDA_OUTCOME_COMMUNICATION_KILL = 6;
+    BDA_OUTCOME_DESTROYED = 7;
+    BDA_OUTCOME_FIRE_HIT = 8;
+    BDA_OUTCOME_FIRE_MISSED = 9;
+}
+
+
+enum BdaOutcomeObserver_Enum 
+{
+    BDA_OUTCOME_OBSERVER_NOT_IN_USE = 0;
+    
+    BDA_OUTCOME_OWN_ENGAGEMENT = 1;
+    BDA_OUTCOME_OBSERVED_ENGAGEMENT = 2;
+}
+
+
+enum ConnectCmd_Enum
+{
+    CONNECT_CMD_NOT_IN_USE = 0;
+    
+    CONNECT_CMD_CONNECT = 1;
+    CONNECT_CMD_DISCONNECT = 2;
+}
+
+
+enum FrameOfReference_Enum 
+{
+    FRAME_OF_REFERENCE_NOT_IN_USE = 0;
+    
+    //*****************************************************************************************************************
+    // Remarks:         +ve roll clockwise.  +ve pitch upwards.  +ve yaw clockwise.
+    //*****************************************************************************************************************
+    FRAME_OF_REFERENCE_WRT_PLATFORM_NED = 1;
+    
+    //*****************************************************************************************************************
+    // Remarks:         +ve roll clockwise.  +ve pitch upwards.  +ve yaw clockwise.
+    //*****************************************************************************************************************
+    FRAME_OF_REFERENCE_WRT_TRUE_NORTH_NED = 2;
+}
+
+
+enum IsActive_Enum 
+{
+    IS_ACTIVE_NOT_IN_USE = 0;
+    
+    IS_ACTIVE_YES = 1;
+    IS_ACTIVE_NO = 2;
+}
+
+
+enum LoiterDirection_Enum
+{
+    LOITER_DIRECTION_VEHICLE_DEPENDENT = 0;
+	LOITER_DIRECTION_CLOCKWISE = 1;
+	LOITER_DIRECTION_ANTI_CLOCKWISE = 2;
+}
+
+
+enum LoiterDurationUnits_Enum
+{
+    LOITER_DURATION_SECOND = 0;
+	LOITER_DURATION_LAP = 1;
+}
+
+
+enum LoiterPattern_Enum
+{
+    LOITER_NONE = 0;
+	LOITER_CIRCULAR = 1;
+	LOITER_RACECOURSE = 2;
+	LOITER_FIGURE_OF_EIGHT = 3;
+	LOITER_HOVER = 4;
+}
+
+
+enum MsgTypeId_Enum
+{
+    MSG_TYPE_ID_NOT_IN_USE = 0;
+    
+    MCS_CONNECT_ACS_COMMAND = 1;
+    ACS_CONNECT_ACS_COMMAND_RESPONSE = 131;
+    ACS_CONNECT_ASSET_COMMAND = 130;
+
+    MCS_MCS_STATUS = 2;
+    ACS_ACS_STATUS = 132;
+    ACS_ASSET_TELEMETRY = 129;
+    ACS_ASSET_ALERT = 133;
+    ACS_ASSET_MOVEMENT_UPDATE = 134;
+
+    MCS_ADD_PROHIBITED_ZONE = 3;
+    MCS_REMOVE_PROHIBITED_ZONE = 4;
+    MCS_ADD_RED_FORCE = 5;
+    MCS_REMOVE_RED_FORCE = 6;
+
+    ACS_BATTLE_REPORT = 135;
+
+    MCS_TASK_SUMMARY = 9;
+    MCS_EXECUTE_TASK_COMMAND = 10;
+    MCS_ABORT_TASK_COMMAND = 11;
+    ACS_TASK_STATUS_UPDATE = 138;
+
+    MCS_LOCK_TARGET_COMMAND = 12;
+    ACS_TARGET_LOCK_STATUS = 139;
+    
+    ACS_TRACK_LIST = 141;
+    MCS_LOCALIZE_TRACK_COMMAND = 15;
+    ACS_LOCALIZED_TRACK_STATUS = 142;
+
+    MCS_ACK = 16;
+    ACS_ACK = 128;
+
+    MCS_IMAGE = 17;
+    ACS_IMAGE = 143;
+	
+    MCS_ASSET_TELEMETRY = 161;	// 0xA1
+    MCS_BATTLE_REPORT = 162;
+}
+
+
+enum PayloadHealth_Enum 
+{
+    PAYLOAD_HEALTH_NOT_IN_USE = 0;
+    
+    PAYLOAD_HEALTH_NORMAL = 1;
+    PAYLOAD_HEALTH_IMMOBILE = 2;
+    PAYLOAD_HEALTH_MALFUNCTION = 3;
+}
+
+
+enum PathControlMode_Enum 
+{
+    PATH_CONTROL_MODE_NOT_IN_USE = 0;
+    
+    TELEOPERATION = 1;
+    TELEOPERATION_ASSISTED = 2;
+    AUTONOMOUS = 3;
+    HOMING = 4;
+}
+
+
+enum ReportType_Enum 
+{
+    REPORT_TYPE_NOT_IN_USE = 0;
+    
+    REPORT_BDA = 1;
+    REPORT_CONTACT_REP = 2;
+    REPORT_SPOT_REP = 3;
+}
+
+
+enum SourceType_Enum 
+{
+    SOURCE_TYPE_NOT_IN_USE = 0;
+    
+    SOURCE_MCS = 1;
+    SOURCE_ACS = 2;
+    SOURCE_ASSET = 3;
+}
+
+
+enum TaskStatus_Enum 
+{
+    TASK_STATUS_NOT_IN_USE = 0;
+    
+    TASK_STATUS_COMPLETED = 1;
+    TASK_STATUS_ABORTED = 2;
+}
+
+
+enum TaskType_Enum 
+{
+    TASK_TYPE_NOT_IN_USE = 0;
+    
+    TASK_PATROL = 1;
+    TASK_SENTRY = 2;
+    TASK_SURVEILLANCE = 3;
+    TASK_ENGAGEMENT = 4;
+    // Deprecated
+	// TASK_FIRING = 5;
+    TASK_MOVEMENT = 6;
+	TASK_BDA = 7;
+}
+
+
+enum TrackClassification_Enum 
+{
+    UNKNOWN = 0;
+    INFANTRY = 1;
+    LIGHT_INFANTRY = 2;
+    MECHANIZED_INFANTRY = 3;
+    ARMOUR_TRACK = 4;
+    ARMOUR_TRACK_LIGHT = 5;
+    ARMOUR_TRACK_MEDIUM = 6;
+    ARMOUR_TRACK_HEAVY = 7;
+    ARMOUR_WHEELED = 8;
+    ARMOUR_WHEELED_LIGHT = 9;
+    ARMOUR_WHEELED_MEDIUM = 10;
+    ARMOUR_WHEELED_HEAVY = 11;
+    ANTI_ARMOUR = 12;
+    ANTI_ARMOUR_LIGHT = 13;
+    ANTI_ARMOUR_ARMOURED_TRACKED = 14;
+    ANTI_ARMOUR_ARMOURED_WHEELED = 15;
+    FIELD_ARTILLERY_MORTAR = 16;
+    FIELD_ARTILLERY_MORTAR_TRACKED = 17;
+    FIELD_ARTILLERY_MORTAR_WHEELED = 18;
+    RECONNAISSANCE_CAVALRY_ARMOURED = 19;
+    RECONNAISSANCE_CAVALRY_MOTORIZED = 20;
+    RECONNAISSANCE_CAVALRY_GROUND = 21;
+    FIELD_ARTILLERY_HOWITZER = 22;
+    FIELD_ARTILLERY_HOWITZER_SELF_PROPELLED = 23;
+    FIELD_ARTILLERY_HOWITZER_LIGHT = 24;
+    FIELD_ARTILLERY_HOWITZER_MEDIUM = 25;
+    FIELD_ARTILLERY_HOWITZER_HEAVY = 26;
+    ARMOURED_VEHICLE = 27;
+    TANK = 28;
+    TANK_LIGHT = 29;
+    TANK_MEDIUM = 30;
+    TANK_HEAVY = 31;
+    ARMOURED_PERSONNEL_CARRIER = 32;
+    ARMOURED_INFANTRY = 33;
+    ARMOURED_C2V_ACV = 34;
+    LIGHT_ARMOURED_VEHICLE = 35;
+
+    SEA_SURFACE_COMBATANT = 36;
+    SEA_SURFACE_CARRIER = 37;
+    SEA_SURFACE_CRUISER = 38;
+    SEA_SURFACE_DESTROYER = 39;
+    SEA_SURFACE_FRIGATE_CORVETTE = 40;
+    SEA_SURFACE_PATROL = 41;
+
+    SUBMARINE = 42;
+    SEA_MINE = 43;
+
+    AIR_FIXED_WING = 44;
+    AIR_BOMBER = 45;
+    AIR_FIGHTER = 46;
+    AIR_FIGHTER_INTERCEPTOR = 47;
+    AIR_CARGO_AIRLIFT_TRANSPORT = 48;
+    AIR_RECONNAISSANCE = 49;
+    AIR_DRONE_FIXED_WING = 50;
+    AIR_ROTARY_WING = 51;
+    AIR_ROTARY_WING_ATTACK = 52;
+    AIR_ROTARY_WING_RECONNAISSANCE = 53;
+}
+
+
+enum UnitOfMeasure_Enum 
+{
+    UNIT_OF_MEASURE_NOT_IN_USE = 0;
+    
+    UNIT_EA = 1;
+}
+
+
+enum RouteLoopType_Enum 
+{
+    ROUTE_LOOP_TYPE_NOT_IN_USE = 0;
+    
+    ROUTE_NO_LOOP = 1;
+    ROUTE_LOOP_FROM_START = 2;
+    ROUTE_LOOP_REVERSE = 3;
+}
+
+
+enum WeaponFireStatus_Enum 
+{
+    WEAPON_FIRE_STATUS_NOT_IN_USE = 0;
+}
+
+
+enum ZoneShape_Enum 
+{
+    ZONE_SHAPE_NOT_IN_USE = 0;
+    
+    ZONE_SHAPE_POLYGON = 1;
+    ZONE_SHAPE_CIRCLE = 2;
+}
+
+
+enum ZoneType_Enum 
+{
+    ZONE_TYPE_NOT_IN_USE = 0;
+    
+    ZONE_AIR = 1;
+    ZONE_GROUND = 2;
+	ZONE_SEA_SURFACE = 3;
+	ZONE_SEA_SUBSURFACE = 4;
+	ZONE_ALL_BATTLE_DIMENSION = 5;
+    ZONE_FIRE = 6;
+}
+
+
+message BattleReport_Struct
+{
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Asset ID
+    //*****************************************************************************************************************
+    int32 m_asset_id = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Red Force ID
+    //*****************************************************************************************************************
+    int32 m_red_force_id = 2;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Report ID
+    //*****************************************************************************************************************
+    int32 m_report_id = 3;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: second
+    // Min val:         0
+    // Max val:         (2^63) - 1
+    // Remarks:         UTC in seconds since 1 Jan 1970. Time of the battle report.
+    //*****************************************************************************************************************
+    int64 m_report_timestamp = 4;
+    
+    ReportType_Enum m_report_type = 5;
+    
+    //*****************************************************************************************************************
+    // Remarks:         Applicable only for mReportType=BDA
+    //*****************************************************************************************************************
+    BdaOutcomeObserver_Enum m_bda_outcome_observer = 6;
+
+    //*****************************************************************************************************************
+    // Remarks:         Applicable only for mReportType=BDA
+    //*****************************************************************************************************************
+    BdaOutcome_Enum m_bda_outcome = 7;
+    
+    //*****************************************************************************************************************
+    // Remarks:         Target location
+    //*****************************************************************************************************************
+    Location_Struct m_location = 8;
+    
+    Affiliation_Enum m_target_affiliation = 9;
+    
+    BattleDimension_Enum m_target_battle_dimension = 10;
+    
+    TrackClassification_Enum m_target_type = 11;
+    
+    UnitOfMeasure_Enum m_unit_of_measure = 12;
+
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         -1
+    // Max val:         (2^31) - 1
+    // Remarks:         Quantity of target.  -1 if quantity is not known.
+    //*****************************************************************************************************************
+    int32 m_quantity = 13;
+    
+    repeated ImageMetadata_Struct m_image_metadata = 14;
+}
+
+
+message Eoi_Struct
+{
+	int32 m_eoi_id = 1;
+	
+	Location_Struct m_target_location = 2;
+	
+	double m_target_location_error = 3;
+	
+	TrackClassification_Enum m_entity_type = 4;
+	
+	TaskType_Enum m_activity_type = 5;
+}
+
+
+message ExtrudedPolyline_Struct
+{
+    repeated Vertex2D_Struct m_vertices = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: metre
+    // Min val:         -10,000
+    // Max val:         10,000
+    // Remarks:         Height above Mean Sea Level of lower altitude bound.
+    //*****************************************************************************************************************
+    double m_min_z = 2;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: metre
+    // Min val:         -10,000
+    // Max val:         10,000
+    // Remarks:         Height above Mean Sea Level of upper altitude bound.
+    //*****************************************************************************************************************
+    double m_max_z = 3;
+}
+
+
+message ImageMetadata_Struct
+{
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Image ID.
+    //*****************************************************************************************************************
+    int32 m_image_id = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Source ID of the image.
+    //*****************************************************************************************************************
+    int32 m_source_id = 2;
+    
+    SourceType_Enum m_source_type = 3;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: second
+    // Min val:         0
+    // Max val:         (2^63) - 1
+    // Remarks:         UTC in seconds since 1 Jan 1970. Time that the image was taken.
+    //*****************************************************************************************************************
+    int64 m_image_timestamp = 4;
+
+    //*****************************************************************************************************************
+    // Remarks:         File extension of the image.
+    //*****************************************************************************************************************
+    string m_image_file_ext = 5;
+}
+
+
+message Image_Struct
+{
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Image ID.
+    //*****************************************************************************************************************
+    int32 m_image_id = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Source ID of the image.
+    //*****************************************************************************************************************
+    int32 m_source_id = 2;
+    
+    SourceType_Enum m_source_type = 3;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: second
+    // Min val:         0
+    // Max val:         (2^63) - 1
+    // Remarks:         UTC in seconds since 1 Jan 1970. Time that the image was taken.
+    //*****************************************************************************************************************
+    int64 m_image_timestamp = 4;
+
+    //*****************************************************************************************************************
+    // Remarks:         File extension of the image.
+    //*****************************************************************************************************************
+    string m_image_file_ext = 5;
+    
+    bytes m_byte_seq = 6;
+}
+
+
+message Location_Struct
+{
+    //*****************************************************************************************************************
+    // Unit of measure: radian
+    // Min val:         -pi
+    // Max val:         pi
+    // Remarks:         WGS84
+    //*****************************************************************************************************************
+    double m_longitude = 1;
+
+    //*****************************************************************************************************************
+    // Unit of measure: radian
+    // Min val:         -pi/2
+    // Max val:         pi/2
+    // Remarks:         WGS84
+    //*****************************************************************************************************************
+    double m_latitude = 2;
+
+    //*****************************************************************************************************************
+    // Unit of measure: metre
+    // Min val:         -10,000
+    // Max val:         10,000
+    // Remarks:         Altitude above Mean Sea Level. 
+    //*****************************************************************************************************************
+    double m_altitude = 3;
+}
+
+
+message Loiter_Struct
+{
+    LoiterPattern_Enum m_loiter_pattern = 1;
+	
+	LoiterDurationUnits_Enum m_loiter_duration_units = 2;
+	
+	//*****************************************************************************************************************
+    // Unit of measure: second or lap
+    // Min val:         -1
+    // Max val:         (2^31) - 1
+    // Remarks:         Loiter duration.  -1 = forever.
+    //*****************************************************************************************************************
+	int32 m_loiter_duration = 3;
+	
+	//*****************************************************************************************************************
+    // Unit of measure: metre
+    // Min val:         0
+    // Max val:         TODO
+    // Remarks:         Loiter radius for CIRCULAR, RACECOURSE, FIGURE_OF_EIGHT
+    //*****************************************************************************************************************	
+	double m_loiter_radius = 4;
+	
+	//*****************************************************************************************************************
+    // Unit of measure: metre
+    // Min val:         0
+    // Max val:         TODO
+    // Remarks:         Loiter length for RACECOURSE, FIGURE_OF_EIGHT
+    //*****************************************************************************************************************
+	double m_loiter_length = 5;
+	
+	//*****************************************************************************************************************
+    // Unit of measure: radian
+    // Min val:         0
+    // Max val:         TODO
+    // Remarks:         With respect to true north
+    //*****************************************************************************************************************
+	double m_loiter_bearing = 6;
+	
+	LoiterDirection_Enum m_loiter_direction = 7;	
+}
+
+
+message MsgHeader_Struct
+{
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Remarks:         Unique ID of this message type
+    //*****************************************************************************************************************
+    MsgTypeId_Enum m_msg_type_id = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: second
+    // Min val:         0
+    // Max val:         (2^63) - 1
+    // Remarks:         UTC in seconds since 1 Jan 1970. Time that the message was sent.
+    //*****************************************************************************************************************
+    int64 m_timestamp = 2;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         System ID of system sending the message
+    //*****************************************************************************************************************
+    int32 m_system_id = 3;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         System ID of the recipient system
+    //*****************************************************************************************************************    
+    int32 m_destination_id = 4;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         -1
+    // Max val:         (2^31) - 1
+    // Remarks:         Expiry time of the message.  -1 if not applicable.
+    //*****************************************************************************************************************
+    int64 m_expiry_time = 5;
+}
+
+
+message Orientation_Struct
+{
+    FrameOfReference_Enum m_frame_of_reference = 1;
+
+    //*****************************************************************************************************************
+    // Unit of measure: radian
+    // Min val:         -pi
+    // Max val:         pi
+    // Remarks:         
+    //*****************************************************************************************************************
+    double m_roll = 2;
+
+    //*****************************************************************************************************************
+    // Unit of measure: radian
+    // Min val:         -pi
+    // Max val:         pi
+    // Remarks:         
+    //*****************************************************************************************************************
+    double m_pitch = 3;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: radian
+    // Min val:         -pi
+    // Max val:         pi
+    // Remarks:         
+    //*****************************************************************************************************************
+    double m_yaw = 4;
+}
+
+
+message PayloadSensorStatus_Struct
+{
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Payload ID of asset.
+    //*****************************************************************************************************************
+    int32 m_payload_id = 1;
+    
+	//*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Payload type of asset.
+	//                  1 = TRP2 SURVEILLANCE CAMERA DAY
+	//                  2 = TRP2 SURVEILLANCE CAMERA NIGHT
+	//                  3 = TRP2 LASER RANGE FINDER
+	//                  4 = TRP2 VEHICLE CAMERA FRONT DAY
+	//                  5 = TRP2 VEHICLE CAMERA FRONT NIGHT
+	//                  6 = TRP2 VEHICLE CAMERA REAR DAY
+	//                  7 = TRP2 FIRING CAMERA DAY
+	//                  8 = TRP2 FIRING CAMERA NIGHT
+    //*****************************************************************************************************************
+    int32 m_payload_type = 2;
+    
+    IsActive_Enum m_is_active = 3;
+    
+    PayloadHealth_Enum m_payload_health = 4;
+    
+    Orientation_Struct m_orientation = 5;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: radian
+    // Min val:         -1
+    // Max val:         pi
+    // Remarks:         Vertical field of view.  -1 if not applicable.
+    //*****************************************************************************************************************
+    double m_v_fov = 6;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: radian
+    // Min val:         -1
+    // Max val:         pi
+    // Remarks:         Horizontal field of view.  -1 if not applicable.
+    //*****************************************************************************************************************
+    double m_h_fov = 7;
+}
+
+
+message PayloadWeaponStatus_Struct
+{
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Payload ID of asset.
+    //*****************************************************************************************************************
+    int32 m_payload_id = 1;
+    
+	//*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Payload type of asset.
+    //*****************************************************************************************************************
+    int32 m_payload_type = 2;
+    
+    IsActive_Enum m_is_active = 3;
+    
+    PayloadHealth_Enum m_payload_health = 4;
+    
+    Orientation_Struct m_orientation = 5;
+    
+    WeaponFireStatus_Enum m_weapon_fire_status = 6;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         -1
+    // Max val:         (2^31) - 1
+    // Remarks:         Indicates the ammo quantity remaining.  -1 if unknown.
+    //*****************************************************************************************************************
+    int32 m_ammo_qty_remaining = 7;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         -1
+    // Max val:         (2^31) - 1
+    // Remarks:         Indicates the ammo quantity fired.  -1 if unknown.
+    //*****************************************************************************************************************
+    int32 m_ammo_qty_fired = 8;
+}
+
+
+message ProhibitedZone_Struct
+{
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Zone ID.
+    //*****************************************************************************************************************
+    int32 m_zone_id = 1;
+    
+    ZoneType_Enum m_zone_type = 2;
+    
+    ZoneShape_Enum m_zone_shape = 3;
+    
+    //*****************************************************************************************************************
+    // Remarks:         Applicable only for mZoneShape=Polygon.
+    //*****************************************************************************************************************
+    repeated Vertex2D_Struct m_vertices = 4;
+    
+    //*****************************************************************************************************************
+    // Remarks:         Applicable only for mZoneShape=Circle.  Centre of circle.
+    //*****************************************************************************************************************
+    Vertex2D_Struct m_circle_centre = 5;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: metre
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Applicable only for mZoneShape=Circle.  Radius from mCircleCentre.
+    //*****************************************************************************************************************
+    int32 m_circle_radius = 6;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: metre
+    // Min val:         -10,000
+    // Max val:         10,000
+    // Remarks:         Not applicable for mZoneType=ZONE_GROUND, ZONE_SEA_SURFACE, ZONE_FIRE.  Height above Mean Sea Level of lower altitude bound.
+    //*****************************************************************************************************************
+    double m_min_z = 7;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: metre
+    // Min val:         -10,000
+    // Max val:         10,000
+    // Remarks:         Not applicable for mZoneType=ZONE_GROUND, ZONE_SEA_SURFACE, ZONE_FIRE.  Height above Mean Sea Level of upper altitude bound.
+    //*****************************************************************************************************************
+    double m_max_z = 8;
+}
+
+
+message RedForce_Struct
+{
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Red Force ID
+    //*****************************************************************************************************************
+    int32 m_red_force_id = 1;
+    
+    Affiliation_Enum m_target_affiliation = 2;
+    
+    BattleDimension_Enum m_target_battle_dimension = 3;
+    
+    TrackClassification_Enum m_target_type = 4;
+    
+    UnitOfMeasure_Enum m_unit_of_measure = 5;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         -1
+    // Max val:         (2^31) - 1
+    // Remarks:         Quantity of target.  -1 if quantity is not known.
+    //*****************************************************************************************************************
+    int32 m_quantity = 6;
+    
+    Location_Struct m_location = 7;
+    
+    repeated ImageMetadata_Struct m_image_metadata = 8;
+
+}
+
+
+message SummarizedTask_Struct
+{
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Task ID
+    //*****************************************************************************************************************
+    int32 m_task_id = 1;
+    
+    TaskType_Enum m_task_type = 2;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: second
+    // Min val:         -1
+    // Max val:         (2^63) - 1
+    // Remarks:         UTC in seconds since 1 Jan 1970.  Start time of task.  -1 if not.
+    //*****************************************************************************************************************
+    int64 m_start_time = 3;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: second
+    // Min val:         -1
+    // Max val:         (2^63) - 1
+    // Remarks:         UTC in seconds since 1 Jan 1970.  End time of task.  -1 if not specified.
+    //*****************************************************************************************************************
+    int64 m_end_time = 4;
+    
+    //*****************************************************************************************************************
+    // Remarks:         Location of task.  If mTaskType=PATROL, this is the first waypoint.  If mTaskType=MOVEMENT, this is the last waypoint.
+    //*****************************************************************************************************************
+    Location_Struct m_waypoint = 5;
+}
+
+
+message Task_Struct
+{
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Task ID
+    //*****************************************************************************************************************
+    int32 m_task_id = 1;
+    
+    TaskType_Enum m_task_type = 2;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: second
+    // Min val:         -1
+    // Max val:         (2^63) - 1
+    // Remarks:         UTC in seconds since 1 Jan 1970.  Start time of task.  -1 if not.
+    //*****************************************************************************************************************
+    int64 m_start_time = 3;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: second
+    // Min val:         -1
+    // Max val:         (2^63) - 1
+    // Remarks:         UTC in seconds since 1 Jan 1970.  End time of task.  -1 if not specified.
+    //*****************************************************************************************************************
+    int64 m_end_time = 4;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         -1
+    // Max val:         (2^31) - 1
+    // Remarks:         Target ID.  Mandatory for mTaskType=Engagement.  Optional for other task time.  -1 = N.A.
+    //*****************************************************************************************************************
+    int32 m_red_force_id = 5;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: metre/second
+    // Min val:         -(2^31)
+    // Max val:         (2^31) - 1
+    // Remarks:         Recommended asset groundspeed. -ve = N.A.
+    //*****************************************************************************************************************
+    double m_recommended_speed = 6;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         -1
+    // Max val:         (2^31) - 1
+    // Remarks:         Payload ID of asset.  -1 if not applicable.
+    //*****************************************************************************************************************
+    int32 m_payload_id = 7;
+    
+    //*****************************************************************************************************************
+    // Remarks:         Points of interest.
+    //*****************************************************************************************************************
+    repeated Location_Struct m_look_at_points = 8;
+    
+    //*****************************************************************************************************************
+    // Remarks:         Extruded polylines of interest.
+    //*****************************************************************************************************************
+    repeated ExtrudedPolyline_Struct m_look_at_polylines = 9;
+    
+    RouteLoopType_Enum m_route_loop_type = 10;
+    
+    repeated Waypoint_Struct m_waypoints = 11;
+	
+	string m_description = 12;
+}
+
+
+message Vertex2D_Struct
+{
+    //*****************************************************************************************************************
+    // Unit of measure: radian
+    // Min val:         -pi
+    // Max val:         pi
+    // Remarks:         WGS84
+    //*****************************************************************************************************************
+    double m_longitude = 1;
+
+    //*****************************************************************************************************************
+    // Unit of measure: radian
+    // Min val:         -pi/2
+    // Max val:         pi/2
+    // Remarks:         WGS84
+    //*****************************************************************************************************************
+    double m_latitude = 2;
+}
+
+
+message Waypoint_Struct
+{
+    Location_Struct m_location = 1;
+	
+	//*****************************************************************************************************************
+    // Unit of measure: metre/second
+    // Min val:         -1
+    // Max val:         (2^31) - 1
+    // Remarks:         -1 if not applicable.
+    //*****************************************************************************************************************
+	double m_speed = 2;
+	
+    //*****************************************************************************************************************
+    // Unit of measure: second
+    // Min val:         -1
+    // Max val:         (2^63) - 1
+    // Remarks:         UTC in seconds since 1 Jan 1970. Estimated time of arrival to this waypoint.  -1 if not applicable.
+    //*****************************************************************************************************************
+    int64 m_eta = 3;
+	
+	Loiter_Struct m_loiter = 4;
+}
+
+
+//*****************************************************************************************************************
+// From: 					MCS
+// To: 						ACS
+// Initiating condition:	MCS Operator-initiated
+// Expected response: 		Acs_Ack_Msg
+// Remarks:					
+//*****************************************************************************************************************
+message Mcs_ConnectAcsCommand_Msg
+{
+    MsgHeader_Struct m_msg_header = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Used to identify the corresponding response message.
+    //*****************************************************************************************************************
+    int32 m_reference_id = 2;
+    
+    ConnectCmd_Enum m_connect_cmd = 3;
+}
+
+
+//*****************************************************************************************************************
+// From: 					ACS
+// To: 						MCS
+// Initiating condition:	ACS Operator-initiated
+// Expected response: 		Mcs_Ack_Msg
+// Remarks:					
+//*****************************************************************************************************************
+message Acs_ConnectAssetCommand_Msg
+{
+    MsgHeader_Struct m_msg_header = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Used to identify the corresponding response message.
+    //*****************************************************************************************************************
+    int32 m_reference_id = 2;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Asset ID.
+    //*****************************************************************************************************************
+    int32 m_asset_id = 3;
+    
+    ConnectCmd_Enum m_connect_cmd = 4;
+}
+
+
+//*****************************************************************************************************************
+// From: 					MCS
+// To: 						ACS
+// Initiating condition:	Every 1 second.
+// Expected response: 		N.A.
+// Remarks:					Also functions as MCS heartbeat.
+//*****************************************************************************************************************
+message Mcs_McsStatus_Msg
+{
+    MsgHeader_Struct m_msg_header = 1;
+
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         -1
+    // Max val:         (2^31) - 1
+    // Remarks:         ACS ID that MCS has established command connection with.  -1 if none.
+    //*****************************************************************************************************************
+    int32 m_acs_id = 2;
+}
+
+
+//*****************************************************************************************************************
+// From: 					ACS
+// To: 						MCS
+// Initiating condition:	Every 1 second.
+// Expected response: 		N.A.
+// Remarks:					Also functions as ACS heartbeat.
+//*****************************************************************************************************************
+message Acs_AcsStatus_Msg
+{
+    MsgHeader_Struct m_msg_header = 1;
+    
+    //*****************************************************************************************************************
+    // Remarks:         ACS location.
+    //*****************************************************************************************************************
+    Location_Struct m_location = 2;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         -1
+    // Max val:         (2^31) - 1
+    // Remarks:         MCS ID that the asset has established command connection with.  -1 if none.
+    //*****************************************************************************************************************
+    int32 m_mcs_id = 3;
+}
+
+
+//*****************************************************************************************************************
+// From: 					ACS
+// To: 						MCS
+// Initiating condition:	Every 1 second.
+// Expected response: 		N.A.
+// Remarks:					
+//*****************************************************************************************************************
+message Acs_AssetTelemetry_Msg
+{
+    MsgHeader_Struct m_msg_header = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Asset ID.
+    //*****************************************************************************************************************
+    int32 m_asset_id = 2;
+    
+	//*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Asset type.
+	//                  1 = TRP2
+    //*****************************************************************************************************************
+    int32 m_asset_type = 3;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         -1
+    // Max val:         (2^31) - 1
+    // Remarks:         MCS ID that the asset has established command connection with.  -1 if none.
+    //*****************************************************************************************************************
+    int32 m_mcs_id = 4;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         -1
+    // Max val:         (2^31) - 1
+    // Remarks:         The task ID of active task.  -1 if no active task.
+    //*****************************************************************************************************************
+    int32 m_task_id = 5;
+    
+    AssetHealth_Enum m_health = 6;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: percent
+    // Min val:         0
+    // Max val:         100
+    // Remarks:         ACS-Asset datalink status
+    //*****************************************************************************************************************
+    int32 m_datalink_status = 7;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: second
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Asset's endurance
+    //*****************************************************************************************************************
+    int32 m_time_left = 8;
+    
+    Location_Struct m_location = 9;
+    
+    Orientation_Struct m_orientation = 10;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: metre/second
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Asset's ground speed
+    //*****************************************************************************************************************
+    double m_ground_speed = 11;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: second
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Asset's indicated airspeed.  -ve if not applicable.
+    //*****************************************************************************************************************
+    double m_ias = 12;
+    
+    PathControlMode_Enum m_path_control_mode = 13;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: second
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Waypoint index of waypoint that the asset came from.
+    //*****************************************************************************************************************
+    int32 m_from_waypoint = 14;
+    
+    repeated PayloadSensorStatus_Struct m_payload_sensor_statuses = 15;
+    
+    repeated PayloadWeaponStatus_Struct m_payload_weapon_statuses = 16;
+}
+
+
+//*****************************************************************************************************************
+// From: 					ACS
+// To: 						MCS
+// Initiating condition:	ACS Operator-initiated
+// Expected response: 		Mcs_Ack_Msg
+// Remarks:					
+//*****************************************************************************************************************
+message Acs_AssetAlert_Msg
+{
+    MsgHeader_Struct m_msg_header = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Used to identify the corresponding response message.
+    //*****************************************************************************************************************
+    int32 m_reference_id = 2;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Asset ID.
+    //*****************************************************************************************************************
+    int32 m_asset_id = 3;
+    
+    AssetAlertType_Enum m_alert_type = 4;
+}
+
+
+//*****************************************************************************************************************
+// From: 					ACS
+// To: 						MCS
+// Initiating condition:	ACS Operator-initiated
+// Expected response: 		Mcs_Ack_Msg
+// Remarks:					
+//*****************************************************************************************************************
+message Acs_AssetMovementUpdate_Msg
+{
+    MsgHeader_Struct m_msg_header = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Used to identify the corresponding response message.
+    //*****************************************************************************************************************
+    int32 m_reference_id = 2;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Asset ID.
+    //*****************************************************************************************************************
+    int32 m_asset_id = 3;
+    
+    RouteLoopType_Enum m_route_loop_type = 4;
+    
+    repeated Waypoint_Struct m_waypoints = 5;
+}
+
+
+//*****************************************************************************************************************
+// From: 					MCS
+// To: 						ACS
+// Initiating condition:	MCS Operator-initiated
+// Expected response: 		Acs_Ack_Msg
+// Remarks:					
+//*****************************************************************************************************************
+message Mcs_AddProhibitedZone_Msg
+{
+    MsgHeader_Struct m_msg_header = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Used to identify the corresponding response message.
+    //*****************************************************************************************************************
+    int32 m_reference_id = 2;
+    
+     ProhibitedZone_Struct m_zone = 4;
+}
+
+
+//*****************************************************************************************************************
+// From: 					MCS
+// To: 						ACS
+// Initiating condition:	MCS Operator-initiated
+// Expected response: 		Acs_Ack_Msg
+// Remarks:					
+//*****************************************************************************************************************
+message Mcs_RemoveProhibitedZone_Msg
+{
+    MsgHeader_Struct m_msg_header = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Used to identify the corresponding response message.
+    //*****************************************************************************************************************
+    int32 m_reference_id = 2;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Zone ID.
+    //*****************************************************************************************************************
+    int32 m_zone_id = 3;
+}
+
+
+//*****************************************************************************************************************
+// From: 					MCS
+// To: 						ACS
+// Initiating condition:	MCS Operator-initiated
+// Expected response: 		Acs_Ack_Msg
+// Remarks:					Optional images are sent separately.
+//*****************************************************************************************************************
+message Mcs_AddRedForce_Msg
+{
+    MsgHeader_Struct m_msg_header = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Used to identify the corresponding response message.
+    //*****************************************************************************************************************
+    int32 m_reference_id = 2;
+    
+	RedForce_Struct m_red_force = 3;
+}
+
+
+//*****************************************************************************************************************
+// From: 					MCS
+// To: 						ACS
+// Initiating condition:	MCS Operator-initiated
+// Expected response: 		Acs_Ack_Msg
+// Remarks:					
+//*****************************************************************************************************************
+message Mcs_RemoveRedForce_Msg
+{
+    MsgHeader_Struct m_msg_header = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Used to identify the corresponding response message.
+    //*****************************************************************************************************************
+    int32 m_reference_id = 2;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Red Force ID
+    //*****************************************************************************************************************
+    int32 m_red_force_id = 3;
+}
+
+
+//*****************************************************************************************************************
+// From: 					ACS
+// To: 						MS
+// Initiating condition:	ACS Operator-initiated
+// Expected response: 		Mcs_Ack_Msg
+// Remarks:					Optional images are sent separately.
+//*****************************************************************************************************************
+message Acs_BattleReport_Msg
+{
+    MsgHeader_Struct m_msg_header = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Used to identify the corresponding response message.
+    //*****************************************************************************************************************
+    int32 m_reference_id = 2;
+    
+	BattleReport_Struct m_report = 3;
+}
+
+
+//*****************************************************************************************************************
+// From: 					MCS
+// To: 						ACS
+// Initiating condition:	MCS Operator-initiated
+// Expected response: 		Acs_Ack_Msg
+// Remarks:					
+//*****************************************************************************************************************
+message Mcs_TaskSummary_Msg
+{
+    MsgHeader_Struct m_msg_header = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Used to identify the corresponding response message.
+    //*****************************************************************************************************************
+    int32 m_reference_id = 2;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Asset ID
+    //*****************************************************************************************************************
+    int32 m_asset_id = 3;
+    
+    repeated SummarizedTask_Struct m_tasks = 4;
+}
+
+
+//*****************************************************************************************************************
+// From: 					MCS
+// To: 						ACS
+// Initiating condition:	MCS Operator-initiated
+// Expected response: 		Acs_Ack_Msg
+// Remarks:					
+//*****************************************************************************************************************
+message Mcs_ExecuteTaskCommand_Msg
+{
+    MsgHeader_Struct m_msg_header = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Used to identify the corresponding response message.
+    //*****************************************************************************************************************
+    int32 m_reference_id = 2;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Asset ID
+    //*****************************************************************************************************************
+    int32 m_asset_id = 3;
+    
+    Task_Struct m_task = 4;
+}
+
+
+//*****************************************************************************************************************
+// From: 					MCS
+// To: 						ACS
+// Initiating condition:	MCS Operator-initiated
+// Expected response: 		Acs_Ack_Msg
+// Remarks:					
+//*****************************************************************************************************************
+message Mcs_AbortTaskCommand_Msg
+{
+    MsgHeader_Struct m_msg_header = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Used to identify the corresponding response message.
+    //*****************************************************************************************************************
+    int32 m_reference_id = 2;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Asset ID
+    //*****************************************************************************************************************
+    int32 m_asset_id = 3;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Task ID
+    //*****************************************************************************************************************
+    int32 m_task_id = 4;
+}
+
+
+//*****************************************************************************************************************
+// From: 					ACS
+// To: 						MCS
+// Initiating condition:	ACS Operator-initiated
+// Expected response: 		Mcs_Ack_Msg
+// Remarks:					
+//*****************************************************************************************************************
+message Acs_TaskStatusUpdate_Msg
+{
+    MsgHeader_Struct m_msg_header = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Used to identify the corresponding response message.
+    //*****************************************************************************************************************
+    int32 m_reference_id = 2;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Asset ID
+    //*****************************************************************************************************************
+    int32 m_asset_id = 3;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Task ID
+    //*****************************************************************************************************************
+    int32 m_task_id = 4;
+    
+    TaskStatus_Enum m_task_status = 5;
+}
+
+
+//*****************************************************************************************************************
+// From: 					MCS
+// To: 						External System
+// Initiating condition:	Every 1 second.
+// Expected response: 		N.A.
+// Remarks:					
+//*****************************************************************************************************************
+message Mcs_AssetTelemetry_Msg
+{
+    MsgHeader_Struct m_msg_header = 1;
+
+	//*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Asset ID.
+    //*****************************************************************************************************************
+    int32 m_asset_id = 2;
+
+	//*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Asset type.
+	//                  1 = TRP2
+    //*****************************************************************************************************************
+    int32 m_asset_type = 3;
+
+	Location_Struct m_location = 4;
+    
+    Orientation_Struct m_orientation = 5;
+}
+
+
+//*****************************************************************************************************************
+// From: 					MCS
+// To: 						CS
+// Initiating condition:	MCS Operator-initiated
+// Expected response: 		Cs_Ack_Msg
+// Remarks:					Optional images are sent separately.
+//*****************************************************************************************************************
+message Mcs_BattleReport_Msg
+{
+    MsgHeader_Struct m_msg_header = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Used to identify the corresponding response message.
+    //*****************************************************************************************************************
+    int32 m_reference_id = 2;
+    
+	BattleReport_Struct m_report = 3;
+}
+
+
+//*****************************************************************************************************************
+// From: 					MCS/ACS
+// To: 						ACS/MCS
+// Initiating condition:	MCS Operator-initiated
+// Expected response: 		N.A.
+// Remarks:					
+//*****************************************************************************************************************
+message Sys_Image_Msg
+{
+    MsgHeader_Struct m_msg_header = 1;
+    
+    Image_Struct m_image = 2;
+}
+
+
+//*****************************************************************************************************************
+// From: 					MCS/ACS
+// To: 						ACS/MCS
+// Initiating condition:	Response to
+//                          - Mcs_ConnectAcsCommand_Msg,
+//                          - Mcs_AddProhibitedZone_Msg, 
+//                          - Mcs_RemoveProhibitedZone_Msg,
+//                          - Mcs_AddRedForce_Msg, 
+//                          - Mcs_RemoveRedForce_Msg,
+//                          - Mcs_TaskSummary_Msg,
+//                          - Mcs_ExecuteTaskCommand_Msg,
+//                          - Mcs_AbortTaskCommand_Msg,
+//                          - Acs_ConnectAssetCommand_Msg,
+//							- Acs_AssetAlert_Msg,
+//                          - Acs_AssetMovementUpdate_Msg,
+//                          - Acs_BattleReport_Msg,
+//                          - Acs_TaskStatusUpdate_Msg,
+// Expected response: 		N.A.
+// Remarks:					
+//*****************************************************************************************************************
+message Sys_Ack_Msg
+{
+    MsgHeader_Struct m_msg_header = 1;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Unique ID of the message type that this msg is responding to.
+    //*****************************************************************************************************************
+    MsgTypeId_Enum m_request_msg_type_id = 2;
+    
+    //*****************************************************************************************************************
+    // Unit of measure: -
+    // Min val:         0
+    // Max val:         (2^31) - 1
+    // Remarks:         Identifies the message that this message is responding to.
+    //*****************************************************************************************************************
+    int32 m_request_reference_id = 3;
+    
+    AckType_Enum m_ack_type = 4;
+    
+    //*****************************************************************************************************************
+    // Remarks:         Text description.
+    //*****************************************************************************************************************
+    string m_description = 5;
+}
+
